@@ -198,15 +198,15 @@ contract LiquidityTransformer is ReentrancyGuard {
 
         teamAddress.sendValue(_etherFee);// amount sent to team adress
 
-        uint256 half = liquifyTokens.div(2);
-        uint256 _lendflareTokenFee = half.div(FEE_DENOMINATOR);
+        uint256 half = liquifyTokens.div(2); // total initial supply of tokens divided by two.
+        uint256 _lendflareTokenFee = half.div(FEE_DENOMINATOR); // part of initial supply kept in reserve
 
-        IERC20(lendflareToken).safeTransfer(teamAddress, _lendflareTokenFee);
+        IERC20(lendflareToken).safeTransfer(teamAddress, _lendflareTokenFee); //tranfer of _lendflareTokenfee amount to teamAdress
 
         lendflareToken.approve(
             address(uniswapRouter),
             half.sub(_lendflareTokenFee)
-        );
+        );// approve of tokens for swap on Uniswap
 
         (
             uint256 amountToken,
@@ -219,19 +219,19 @@ contract LiquidityTransformer is ReentrancyGuard {
                 0,
                 address(0x0),
                 block.timestamp
-            );
+            );//creation of the liquidity on Uniswap. Ownership to 0x0 address.
 
-        globals.liquidity = true;
-        globals.endTimeAt = block.timestamp;
+        globals.liquidity = true; //bool variable to confirm liquidity has been added on Uniswap.
+        globals.endTimeAt = block.timestamp; //timestamp
 
-        lendflareToken.setLiquidityFinish();
+        lendflareToken.setLiquidityFinish(); //call interface function from lendlfare token contract
 
         emit UniSwapResult(
             amountToken,
             amountETH,
             liquidity,
             globals.endTimeAt
-        );
+        );//emit event
     }
 
     function getMyTokens() external afterUniswapTransfer nonReentrant {
@@ -260,12 +260,12 @@ contract LiquidityTransformer is ReentrancyGuard {
                 );
             }
         }
-    }
+    }//get user token after IDO
 
     /* view functions */
     function WETH() public pure returns (address) {
         return IUniswapV2Router02(uniswapRouter).WETH();
-    }
+    }//get weth adress from Uniswap
 
     function checkMyTokens(address _sender) public view returns (uint256) {
         if (
@@ -282,11 +282,11 @@ contract LiquidityTransformer is ReentrancyGuard {
         uint256 myTokens = otherHalf.mul(percent).div(100e18);
 
         return myTokens;
-    }
+    }//get tokens available for withdraw
 
     function factory() public pure returns (address) {
         return IUniswapV2Router02(uniswapRouter).factory();
-    }
+    }// return uniswap factory adress
 
     function getInvestorHistory(address _sender)
         public
