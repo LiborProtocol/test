@@ -16,8 +16,7 @@ describe("Lock", function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, otherAccount] = await ethers.getSigners();
-    er/account by default
-    const [owner, otherAccount] = await ethers.getSigners();
+
     const Lock = await ethers.getContractFactory("Lock");
     const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
 
@@ -57,11 +56,18 @@ describe("Lock", function () {
     });
   });
 
+/*
+  
   describe("Withdrawals", function () {
     describe("Validations", function () {
       it("Should revert with the right error if called too soon", async function () {
         const { lock } = await loadFixture(deployOneYearLockFixture);
 
+        describe("Withdrawals", function () {
+          describe("Validations", function () {
+            it("Should revert with the right error if called too soon", async function () {
+              const { lock } = await loadFixture(deployOneYearLockFixture);
+      
         await expect(lock.withdraw()).to.be.revertedWith(
           "You can't withdraw yet"
         );
@@ -123,3 +129,5 @@ describe("Lock", function () {
     });
   });
 });
+
+*/
