@@ -114,13 +114,12 @@ contract LiquidityTransformer is ReentrancyGuard {
 
         minInvest = 0.1 ether;
         investmentTime = 7 days;
-
         
     }
 
 
-    function createPair() external {
-        require(address(uniswapPair) == address(0), "!uniswapPair");
+    function createPair() external { //create pair on uniswap
+        require(address(uniswapPair) == address(0), "!uniswapPair"); //check that uniswap pair is null adress and so has not been udpated by the contract.
 
         uniswapPair = address(
             IUniswapV2Factory(factory()).createPair(
@@ -139,7 +138,7 @@ contract LiquidityTransformer is ReentrancyGuard {
 
     function reserve() external payable {
         _reserve(msg.sender, msg.value);
-    }
+    } //call function _reserve to add user eth contribution to the IDO. (only if this user did a initial contribution in eth, not in tokens)
 
     function reserveWithToken(address _tokenAddress, uint256 _tokenAmount)
         external
@@ -161,7 +160,7 @@ contract LiquidityTransformer is ReentrancyGuard {
         );
 
         _reserve(msg.sender, amounts[1]);
-    }
+    }//call function _reserve if the user deposit is a token deposit.
 
     function _reserve(address _senderAddress, uint256 _senderValue) internal {
         require(block.timestamp >= launchTime, "Not started");
@@ -184,7 +183,7 @@ contract LiquidityTransformer is ReentrancyGuard {
             _senderValue
         );
         globals.totalBuys++;
-    }
+    }//_reserve update IDO global contribution and user contribution
 
     function forwardLiquidity() external nonReentrant {
         require(msg.sender == tx.origin, "!EOA");
@@ -194,10 +193,10 @@ contract LiquidityTransformer is ReentrancyGuard {
             "Not over yet"
         );
 
-        uint256 _etherFee = globals.totalWeiContributed.div(FEE_DENOMINATOR);
-        uint256 _balance = globals.totalWeiContributed.sub(_etherFee);
+        uint256 _etherFee = globals.totalWeiContributed.div(FEE_DENOMINATOR); //amount kept as team reserves
+        uint256 _balance = globals.totalWeiContributed.sub(_etherFee); //amount kept as liquidity
 
-        teamAddress.sendValue(_etherFee);
+        teamAddress.sendValue(_etherFee);// amount sent to team adress
 
         uint256 half = liquifyTokens.div(2);
         uint256 _lendflareTokenFee = half.div(FEE_DENOMINATOR);
