@@ -160,7 +160,7 @@ contract LiquidityTransformer is ReentrancyGuard {
         );
 
         _reserve(msg.sender, amounts[1]);
-    }//call function _reserve if the user deposit is a token deposit.
+    } //call function _reserve if the user deposit is a token deposit.
 
     function _reserve(address _senderAddress, uint256 _senderValue) internal {
         require(block.timestamp >= launchTime, "Not started");
@@ -183,7 +183,7 @@ contract LiquidityTransformer is ReentrancyGuard {
             _senderValue
         );
         globals.totalBuys++;
-    }//_reserve update IDO global contribution and user contribution
+    } //_reserve update IDO global contribution and user contribution
 
     function forwardLiquidity() external nonReentrant {
         require(msg.sender == tx.origin, "!EOA");
@@ -231,7 +231,7 @@ contract LiquidityTransformer is ReentrancyGuard {
             amountETH,
             liquidity,
             globals.endTimeAt
-        );//emit event
+        ); //emit event
     }
 
     function getMyTokens() external afterUniswapTransfer nonReentrant {
@@ -260,12 +260,12 @@ contract LiquidityTransformer is ReentrancyGuard {
                 );
             }
         }
-    }//get user token after IDO
+    }// get user token after IDO
 
     /* view functions */
     function WETH() public pure returns (address) {
         return IUniswapV2Router02(uniswapRouter).WETH();
-    }//get weth adress from Uniswap
+    }// get weth adress from Uniswap
 
     function checkMyTokens(address _sender) public view returns (uint256) {
         if (
@@ -282,7 +282,7 @@ contract LiquidityTransformer is ReentrancyGuard {
         uint256 myTokens = otherHalf.mul(percent).div(100e18);
 
         return myTokens;
-    }//get tokens available for withdraw
+    }// get tokens available for withdraw
 
     function factory() public pure returns (address) {
         return IUniswapV2Router02(uniswapRouter).factory();
@@ -294,7 +294,7 @@ contract LiquidityTransformer is ReentrancyGuard {
         returns (uint256[2] memory)
     {
         return investorHistory[_sender];
-    }
+    }// get amount that have been provided by users
 
     function preparePath(address _tokenAddress)
         internal
@@ -304,5 +304,5 @@ contract LiquidityTransformer is ReentrancyGuard {
         _path = new address[](2);
         _path[0] = _tokenAddress;
         _path[1] = WETH();
-    }
+    }// path used for the funding swap on Uniswap
 }
