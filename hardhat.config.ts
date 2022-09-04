@@ -9,16 +9,19 @@ const zaddr =
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL ? process.env.ROPSTEN_URL : zaddr,
+    goerli: {
+      url: process.env.GOERLI_URL ? process.env.GOERLI_URL : zaddr,
       accounts: [
-        process.env.ROPSTEN_PRIVATE_KEY
-          ? process.env.ROPSTEN_PRIVATE_KEY
+        process.env.GOERLI_PRIVATE_KEY1
+          ? process.env.GOERLI_PRIVATE_KEY1
           : zaddr,
+        process.env.GOERLI_PRIVATE_KEY2
+          ? process.env.GOERLI_PRIVATE_KEY2
+          : zaddr  
       ],
-      chainId: 5, // Ropsten's id
-      gas: 8000000, // Ropsten has a lower block limit than mainnet
-      gasPrice: 53000000000,
+      chainId: 5, // Goerli's id
+      //gas: 8000000, // Goerli has a lower block limit than mainnet
+      //gasPrice: 53000000000,
       //gasPrice: 2000000000
     }
   }
